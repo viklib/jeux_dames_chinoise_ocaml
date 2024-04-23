@@ -158,8 +158,7 @@ let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) -> let(i,j,k) = c in m
 let rec colorie = fun (coul : couleur) -> fun(l : case list) -> match l with 
 |[]->([]:case_coloree list) 
 |t::q -> ([t,coul]@(colorie coul q) : case_coloree list);;
-assert( colorie Rouge [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)] =[((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);
-((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)] )
+assert( colorie Rouge [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)] =[((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)] );;
 (*Q15*)
 let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
   match l with
@@ -174,13 +173,11 @@ let tourner_config = fun ( conf : configuration) ->
 (*
 2.2 Recherche et suppression de case dans une configuration
 Q17*)
-let rec associe (a:'a) (l:('a*'b) list) (defaut:'b) :'b =
+let rec associe = fun(a:'a)-> fun(l:('a*'b) list) -> fun(defaut:'b) ->
   match l with
     |[]->defaut
-    |(case,col)::fin -> if case = a then
-                          col
-                        else
-                          associe a fin defaut;;
+    |(case,couleur)::fin -> if case = a then couleur 
+                           else associe a fin defaut;;
 
 let quelle_couleur = fun (c:case)-> fun(conf:configuration) -> let (case_coul,coul,dim) =conf in
   (associe c case_coul Libre : couleur );;
@@ -193,12 +190,26 @@ let rec supprime_dans_config  (c:case) (conf:configuration) :configuration =
   |((case,couleur)::q,coul_list,dim) -> let case_list,coul_list,dim =supprime_dans_config c (q,coul_list,dim) in
                                         if c = case then case_list,coul_list,dim 
                                         else [case,couleur]@ case_list,coul_list,dim ;;
-type configuration = case_coloree list * couleur list * dimension;; (*sans case libre*)
-let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration );;
-([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3)
+
+let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
+and jeux2 = (([],[Vert;Rouge],2):configuration);;
 (*jeux d'essais*)
 assert( supprime_dans_config (-4,1,3) jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3));;
 assert( supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3));;
+assert( supprime_dans_config (3,2,1) jeux2 = jeux2);;
+(*
+2.3 Jouer un coup unitaire
+Q19*)
+type coup = Du of case * case | Sm of case list;;
+let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
+         let (case_list,t::q(*coul_list*),dim) = conf in
+ match k with 
+ |Du(case_1,case_2)-> (sont_cases_voisines case_1 case_2 (*1er verif*) && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) && est_dans_losange case_2 dim :bool)
+[@@warning "-8"];;
+(*Q20*)
+let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
+         supprimer_dans_config
+
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
