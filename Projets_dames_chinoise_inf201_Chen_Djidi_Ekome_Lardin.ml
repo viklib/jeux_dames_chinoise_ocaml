@@ -206,10 +206,14 @@ let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
  match k with 
  |Du(case_1,case_2)-> (sont_cases_voisines case_1 case_2 (*1er verif*) && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) && est_dans_losange case_2 dim :bool)
 [@@warning "-8"];;
+
 (*Q20*)
 let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
-         supprimer_dans_config
-
+  match k with 
+  |Du(case_1, case_2) -> let coul = quelle_couleur case_1 conf in
+                         let (case_list, coul_list, dim) = supprime_dans_config case_1 conf in 
+                         (((case_2, coul) :: case_list, coul_list, dim):configuration)
+[@@warning "-8"];;
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
