@@ -221,6 +221,24 @@ let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
 
 (*Q22*)
+let rec est_libre_case ((c1, c2, c3) : case) ((x, y, z) : vecteur) (dist : int) (conf : configuration): bool = 
+  let (case_list, case_coul, dim) = conf in
+  let vec = (c1 + x*dist, c2 + y*dist, c3 + z*dist) in
+  match dist with
+  |0 -> true
+  |dist -> if ((associe vec case_list Libre) = Libre) then est_libre_case (c1,c2,c3) (x,y,z) (dist-1) conf 
+  else false
+;;
+
+let est_libre_seg (c1 : case) (c2 : case) (conf : configuration) : bool =
+  let (vect, dist) = vec_et_dist c1 c2 in
+  if dist <= 1 then failwith "Les 2 cases sont voisins" else
+  (est_libre_case c1 vect (dist-1) conf)
+;;
+
+est_libre_seg (0, 0, 0) (0, 2, -2) jeux1;;
+est_libre_seg (0, 0, 0) (0, 1, -1) jeux1;;
+est_libre_seg (-4, 1, 3) (-4, 3, 1) ([(-4,2,2), Rouge], [Rouge], 1);;
 
 
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
