@@ -214,6 +214,15 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
                          let (case_list, coul_list, dim) = supprime_dans_config case_1 conf in 
                          (((case_2, coul) :: case_list, coul_list, dim):configuration)
 [@@warning "-8"];;
+(*Q21*)
+let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
+  match (est_coup_valide conf k : bool) with
+  |true -> (appliquer_le_coup conf k :configuration)
+  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
+
+(*Q22*)
+
+
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
 (*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
