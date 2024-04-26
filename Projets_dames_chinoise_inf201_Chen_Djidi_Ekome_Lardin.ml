@@ -21,14 +21,12 @@ type couleur = Vert | Jaune | Rouge | Noir | Bleu | Marron (*Les couleurs des jo
               | Libre
               | Code of string (*une chaine restreinte a 3 caracteres*);;
 
-
-
-
 type case_coloree = case * couleur;;
-
 
 type configuration = case_coloree list * couleur list * dimension;; (*sans case libre*)
         
+type coup = Du of case * case | Sm of case list;;
+
 type coup = Du of case * case | Sm of case list;;
 
 
@@ -38,8 +36,20 @@ let indice_valide (x:int) (dim:dimension) : bool =
 
 let est_case ((i,j,k):case):bool=
  (i+j+k=0);;
+(*Variable pour test*)
 
+let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
+and jeux2 = (([],[Vert;Rouge],2):configuration)
+and jeux3 =(([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
+((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
+((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
+and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) ;;
 
+(*Question 2*)
 
 let est_dans_losange ((i,j,k):case) (dim:dimension) : bool =
   -dim<=j && j<= dim && -dim <= k && k <= dim;;           
@@ -192,11 +202,7 @@ let rec supprime_dans_config  (c:case) (conf:configuration) :configuration =
                                         if c = case then case_list,coul_list,dim 
                                         else [case,couleur]@ case_list,coul_list,dim ;;
 
-let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
-and jeux2 = (([],[Vert;Rouge],2):configuration)
-and jeux3 =(([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
-((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration);;
+
 (*jeux d'essais*)
 assert( supprime_dans_config (-4,1,3) jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3));;
 assert( supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3));;
@@ -204,7 +210,7 @@ assert( supprime_dans_config (3,2,1) jeux2 = jeux2);;
 (*
 2.3 Jouer un coup unitaire
 Q19*)
-type coup = Du of case * case | Sm of case list;;
+
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
  match k with 
@@ -250,22 +256,28 @@ let est_saut = fun(case1:case)-> fun (case2:case) ->fun(conf:configuration) ->
                 else if est_libre_seg c case2 conf && est_libre_seg case1 c conf  then true  
                 else false ;;
 
-let jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
-((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration);;
+
 assert(est_saut (0, 0, 0) (0, 2, -2) ([((0, 0, 0), Jaune); ((0,1,-1), Rouge)], [Rouge; Jaune], 2) = true
 && est_saut (-4, 3, 1) (-2, 1, 1) jeux3 = false 
 && est_saut (-6, 3, 3) (-4, 1, 3) jeux3 = false
 && est_saut (-2, 2, 0) (0, 0, 0) jeux3 = false
-&& est_saut(-4, 1, 3) (-4, 3, 1) jeux4 = true*
-est_saut (-3, 5, -2) (-2, 4, -2) jeux4)
+&& est_saut(-4, 1, 3) (-4, 3, 1) jeux4 = true)
 ;;
 (*Q24*)
 let rec est_saut_multiple = fun(l_c : case list)-> fun(conf:configuration) ->
          match l_c with
-         |[] -> []
-         |[x] -> false 
-         |c::k::q -> est _
+         |[x] -> est_case x
+         |[x;y] -> est_saut x y conf
+         |c::k::q -> est_saut c k conf && est_saut_multiple q conf
+         [@@warning "-8"];;
+assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true 
+&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux5 = true 
+&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux3 =false
+&& est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
+
+(*Q25*)
+
+
 
 
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
