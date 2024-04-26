@@ -278,6 +278,25 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 (*Q25*)
 
 
+let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
+         let (case_list,t::q(*coul_list*),dim) = conf in
+ match k with 
+ |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
+                      && sont_cases_voisines case_1 case_2 (*1er verif*) && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) && est_dans_losange case_2 dim :bool)
+[@@warning "-8"];;
+
+let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
+  match k with 
+  |Du(case_1, case_2) -> let coul = quelle_couleur case_1 conf in
+                         let (case_list, coul_list, dim) = supprime_dans_config case_1 conf in 
+                         (((case_2, coul) :: case_list, coul_list, dim):configuration)
+[@@warning "-8"];;
+
+let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
+  match (est_coup_valide conf k : bool) with
+  |true -> (appliquer_le_coup conf k :configuration)
+  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
+
 
 
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
