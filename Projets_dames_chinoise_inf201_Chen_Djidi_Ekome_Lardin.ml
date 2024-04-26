@@ -275,7 +275,7 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 && est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux3 =false
 && est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
 
-(*Q25*)
+(*Q25
 
 
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
@@ -295,7 +295,7 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
 let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
   |true -> (appliquer_le_coup conf k :configuration)
-  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
+  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;*)
 
 
 
@@ -338,13 +338,12 @@ let affiche (config:configuration):unit =
     in
     affiche_aux (2*dim+1);;
 
-let conf_1=([((0,0,0),Jaune)],[Jaune],2);;
-affiche conf_1;;
-let conf_reggae=([((0,-1,1),Vert);((0,0,0),Jaune);((0,1,-1),Rouge)],[Vert;Jaune;Rouge],1);;
-affiche conf_reggae;;
-let conf_vide=([],[],2);;
-affiche conf_vide;;
-
+affiche jeux1;;
+affiche jeux2;;
+affiche jeux3;;
+affiche jeux4;;
+affiche jeux5;;
+affiche jeux6;;
 
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
