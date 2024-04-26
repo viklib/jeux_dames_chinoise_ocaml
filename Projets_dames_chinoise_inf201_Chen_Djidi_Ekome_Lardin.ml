@@ -242,7 +242,30 @@ assert(est_libre_seg (0, 0, 0) (0, 2, -2) jeux1 = true
 && est_libre_seg (-5, 2, 3) (-1, -2, 3) jeux3 = false
 && est_libre_seg (-3, 0, 3) (0, -3, 3) jeux3 = true);;
 (*Q23*)
+let est_saut = fun(case1:case)-> fun (case2:case) ->fun(conf:configuration) ->  
+  if quelle_couleur case2 conf <> Libre  then (false:bool)
+  else match  (calcul_pivot case1 case2: case_option)  with 
+    | None -> false 
+    | Some c -> if quelle_couleur c conf = Libre  then false
+                else if est_libre_seg c case2 conf && est_libre_seg case1 c conf  then true  
+                else false ;;
 
+let jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
+((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration);;
+assert(est_saut (0, 0, 0) (0, 2, -2) ([((0, 0, 0), Jaune); ((0,1,-1), Rouge)], [Rouge; Jaune], 2) = true
+&& est_saut (-4, 3, 1) (-2, 1, 1) jeux3 = false 
+&& est_saut (-6, 3, 3) (-4, 1, 3) jeux3 = false
+&& est_saut (-2, 2, 0) (0, 0, 0) jeux3 = false
+&& est_saut(-4, 1, 3) (-4, 3, 1) jeux4 = true*
+est_saut (-3, 5, -2) (-2, 4, -2) jeux4)
+;;
+(*Q24*)
+let rec est_saut_multiple = fun(l_c : case list)-> fun(conf:configuration) ->
+         match l_c with
+         |[] -> []
+         |[x] -> false 
+         |c::k::q -> est _
 
 
 (*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
