@@ -106,9 +106,10 @@ let vec_et_dist = fun (c:case) -> fun(k:case) ->
  if d = 0 then ((0,0,0),0 : vecteur*int)
    else (((i/d,j/d,k/d),d): vecteur*int);;
 
+let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
 
-(*
-  2.1 Configuration initiale et rotation du plateau
+assert(vec_et_dist case_1 case_0 =((0,1,-1),2) && vec_et_dist case_1 case_2 =((-1,1,-1),2) && vec_et_dist case_2 case_0 =((1,0,0),2) && vec_et_dist case_2 case_2 = ((case_0),0));;
+(* 2.1 Configuration initiale et rotation du plateau
 Q10*)
 
 
