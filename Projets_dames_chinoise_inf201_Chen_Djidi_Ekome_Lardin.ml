@@ -288,8 +288,8 @@ let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
                                && quelle_couleur case_1 conf = t
                                && quelle_couleur case_2 conf = Libre 
                            && est_dans_losange case_2 dim 
-         |Sm(l) -> est_saut_multiple l conf 
-                   && est_dans_losange (der_list l) dim
+         |Sm(list) -> est_saut_multiple list conf 
+                   && est_dans_losange (der_list list) dim
          [@@warning "-8"];;
 
 
