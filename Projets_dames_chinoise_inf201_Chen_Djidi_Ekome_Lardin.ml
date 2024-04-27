@@ -209,7 +209,7 @@ assert( supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2)
 assert( supprime_dans_config (3,2,1) jeux2 = jeux2);;
 (*
 2.3 Jouer un coup unitaire
-Q19*)
+Q19
 
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
@@ -230,7 +230,7 @@ let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   |true -> (appliquer_le_coup conf k :configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
 
-(*Q22*)
+Q22*)
 let case_libre  = fun(c:case) -> fun(conf:configuration) ->
   (quelle_couleur c conf = Libre : bool);; (*dit si case a la couleur libre*)
 
@@ -277,21 +277,22 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 
 (*Q25*)
 let rec fin_list = fun(l: 'a list) ->
-         match list with
-         |[]->[]
+         match l with
          |[x] ->x
-         |t::q -> fin_list q;;
+         |t::q -> fin_list q
+         [@@warning "-8"];;
 
 
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
- match k with 
- |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
+          match k with 
+          |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
                       && sont_cases_voisines case_1 case_2 (*1er verif*)
-                      && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) 
+                      && quelle_couleur case_1 conf = t
+                      && quelle_couleur case_2 conf = Libre 
                       && est_dans_losange case_2 dim 
-|Sm(list) -> est_saut_multiple list conf 
-             && est_dans_losange (fin_list list) dim
+         |Sm(l) -> est_saut_multiple l conf 
+                   && est_dans_losange (fin_list l) dim
 [@@warning "-8"]
 ;;
 
@@ -301,17 +302,20 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
   |Du(case_1, case_2) -> let coul = quelle_couleur case_1 conf in
                          let (case_list, coul_list, dim) = supprime_dans_config case_1 conf in 
                          (((case_2, coul) :: case_list, coul_list, dim):configuration)
-[@@warning "-8"];;
+|Sm(list) -> let case1 = List.hd list in
+             let couleur = quelle_couleur case1 conf in
+             let (case_list, coul_list, dim) = supprime_dans_config case1 conf in
+             let fin = fin_list list in
+              ((fin, couleur)::case_list, coul_list, dim)
+;;
 
 let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
   |true -> (appliquer_le_coup conf k :configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;*)
+  ;;
 
-
-
-(*AFFICHAGE (fonctionne si les fonctions au dessus sont remplies)*)
-(*transfo transforme des coordonnees cartesiennes (x,y) en coordonnees de case (i,j,k)*)
+(*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
 let couleur2string (coul:couleur):string =
@@ -359,3 +363,37 @@ affiche jeux6;;
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 *)
+
+(*3 Verifier une partie
+Q26*)
+
+let
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
