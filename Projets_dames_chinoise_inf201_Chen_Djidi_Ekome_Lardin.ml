@@ -366,16 +366,31 @@ affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 
 (*3 Verifier une partie
 Q26*)
+let est_dans_Nord= fun (c : case) ->fun(dim : dimension) ->
+  let (i,j,k) = c in 
+  i>dim && est_dans_etoile c dim ;;
 
-let score = fun(conf:configuration ->
-  List.fold_left (fun acc ((i,j,k),cou) -> if cou = (List.hd ljoueur) then acc + i else acc) 0 lcase
+let score = fun (conf: configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  let couleur_protagoniste = List.hd coul_list in
+  List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
+      else acc) 0 case_list ;; 
+
+let score_gagnant (dim : dimension) : int = 
+  let rec i_list iter dim = 
+    match iter with 
+    |0 -> []
+    |x -> [(dim+1)*iter]@i_list (iter-1) (dim+1) 
+  in let i_liste = i_list dim dim in
+  List.fold_right (fun i acc -> i+acc) i_liste 0
 ;;
+      
+(*Q27*)
 
-
-
-
-
-
+let gagne = fun(conf:configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  score conf = score_gagnant dim
+;;
 
 
 
