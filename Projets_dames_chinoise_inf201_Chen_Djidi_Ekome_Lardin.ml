@@ -87,13 +87,13 @@ let sont_cases_voisines= fun (c:case) -> fun(k:case) ->
  let (d1,d2,d3)= diff_case  k c in
  let d = (abs d1, abs d2, abs d3) in
  d = (1, 1, 0) || d = (1, 0, 1) || d= (0, 1, 1);;
- assert(sont_cases_voisines (3,1,-4)(3,2,-5)=true);;
- assert(sont_cases_voisines (4,1,-5)(1,2,-5)=false);;
- assert(sont_cases_voisines (1, 0,-1)(0,0,0)=true);;
- assert(sont_cases_voisines (1, 0, -1)(1,1,-2)=true);;
- assert(sont_cases_voisines (1, 0,-1)(2,0,-2)=true);;
- assert(sont_cases_voisines (1, 0, -1)(2,-1,-1)=true);;
- assert(sont_cases_voisines (1, 0,-1)(0,1,-1)=true);;
+ assert(sont_cases_voisines (3,1,-4)(3,2,-5)=true
+ && sont_cases_voisines (4,1,-5)(1,2,-5)=false
+ && sont_cases_voisines (1, 0,-1)(0,0,0)=true
+ && sont_cases_voisines (1, 0, -1)(1,1,-2)=true
+ && sont_cases_voisines (1, 0,-1)(2,0,-2)=true
+ && sont_cases_voisines (1, 0, -1)(2,-1,-1)=true
+ && sont_cases_voisines (1, 0,-1)(0,1,-1)=true);;
 (*Q8*)
 type case_option = None | Some of case;;
 let calcul_pivot = fun (c:case) -> fun(k:case) ->
@@ -118,11 +118,12 @@ let vec_et_dist = fun (c:case) -> fun(k:case) ->
 
 let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
 
-assert(vec_et_dist case_1 case_0 =((0,1,-1),2) && vec_et_dist case_1 case_2 =((-1,1,-1),2) && vec_et_dist case_2 case_0 =((1,0,0),2) && vec_et_dist case_2 case_2 = ((case_0),0));;
+assert(vec_et_dist case_1 case_0 =((0,1,-1),2) 
+&& vec_et_dist case_1 case_2 =((-1,1,-1),2) 
+&& vec_et_dist case_2 case_0 =((1,0,0),2) 
+&& vec_et_dist case_2 case_2 = ((case_0),0));;
 (* 2.1 Configuration initiale et rotation du plateau
 Q10*)
-
-
 let tourner_list = fun (l:'a list) ->
  match l with
  |[] ->([]:'a list)
@@ -134,9 +135,9 @@ let rec der_list = fun ( l: 'a list) ->
  |[x] -> (x:'a)
  |t::q -> (der_list q : 'a)
  [@@warning "-8"];;
+
+
 (*Q11
-
-
 Equation
 (1) remplir-segment(0,(i,j,k)) = []
 (2) remplir-segment(1,(i,j,k)) = [(i,j,k)]
@@ -147,10 +148,10 @@ Fonction pour remplir un segment *)
 let rec remplir_segment = fun (n:int) -> fun (c: case) ->
  let (i,j,k) = c in
 if n = 0 then ([]:case list) else  ((i,j,k)::(remplir_segment (n-1) (i,j+1,k-1)):case list);;
-assert(remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]);;
-assert(remplir_segment 1 (0,0,0)=[(0,0,0)]);;
-assert(remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]);;
-assert(remplir_segment 4 (-3,-3,6) = [(-3, -3, 6); (-3, -2, 5); (-3, -1, 4); (-3, 0, 3)]);;
+assert(remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
+&& remplir_segment 1 (0,0,0)=[(0,0,0)]
+&& remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
+&& remplir_segment 4 (-3,-3,6) = [(-3, -3, 6); (-3, -2, 5); (-3, -1, 4); (-3, 0, 3)]);;
 
 
 (*Q12*)
@@ -162,7 +163,10 @@ let rec remplir_triangle_bas = fun(n:int) -> fun(c: case)->
  |n -> ((remplir_segment n (i,j,k))@(remplir_triangle_bas (n-1) (i-1,j+1,k)):case list);;
 assert(remplir_triangle_bas 3 (-4, 1, 3) = [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)]);;
 (*Q13*)
-let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) -> let(i,j,k) = c in match n with | n when n <= 0 -> ([]: case list) |_ ->(( remplir_segment n (i,j,k) @ remplir_triangle_haut (n-1) (i+1,j,k-1) ) :case list) ;;
+let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) -> let(i,j,k) = c in
+         match n with 
+         | n when n <= 0 -> ([]: case list) 
+         |_ ->(( remplir_segment n (i,j,k) @ remplir_triangle_haut (n-1) (i+1,j,k-1) ) :case list) ;;
 
 (*Q14*)
 
@@ -204,9 +208,9 @@ let rec supprime_dans_config  (c:case) (conf:configuration) :configuration =
 
 
 (*jeux d'essais*)
-assert( supprime_dans_config (-4,1,3) jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3));;
-assert( supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3));;
-assert( supprime_dans_config (3,2,1) jeux2 = jeux2);;
+assert( supprime_dans_config (-4,1,3) jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3)
+&& supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3)
+&& supprime_dans_config (3,2,1) jeux2 = jeux2);;
 (*
 2.3 Jouer un coup unitaire
 Q19
@@ -276,25 +280,17 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 && est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
 
 (*Q25*)
-let rec fin_list = fun(l: 'a list) ->
-         match l with
-         |[x] ->x
-         |t::q -> fin_list q
-         [@@warning "-8"];;
-
-
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
           match k with 
           |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
-                      && sont_cases_voisines case_1 case_2 (*1er verif*)
-                      && quelle_couleur case_1 conf = t
-                      && quelle_couleur case_2 conf = Libre 
-                      && est_dans_losange case_2 dim 
+                               && sont_cases_voisines case_1 case_2 (*1er verif*)
+                               && quelle_couleur case_1 conf = t
+                               && quelle_couleur case_2 conf = Libre 
+                           && est_dans_losange case_2 dim 
          |Sm(l) -> est_saut_multiple l conf 
-                   && est_dans_losange (fin_list l) dim
-[@@warning "-8"]
-;;
+                   && est_dans_losange (der_list l) dim
+         [@@warning "-8"];;
 
 
 let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
@@ -305,16 +301,14 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
 |Sm(list) -> let case1 = List.hd list in
              let couleur = quelle_couleur case1 conf in
              let (case_list, coul_list, dim) = supprime_dans_config case1 conf in
-             let fin = fin_list list in
+             let fin = der_list list in
               ((fin, couleur)::case_list, coul_list, dim)
 ;;
 
 let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
   |true -> (appliquer_le_coup conf k :configuration)
-  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;*)
-  ;;
-
+  |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
 (*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
@@ -360,6 +354,7 @@ affiche jeux4;;
 affiche jeux5;;
 affiche jeux6;;
 
+
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 *)
@@ -382,11 +377,9 @@ let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
     |0 -> []
     |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
 (*b nb d'element dans la list*)
-
-assert( nb_precedent
 let score_gagnant= fun (dim : dimension) ->
-  let cordonnne = list_val_ligne  dim dim in
-  List.fold_right (fun i acc -> i+acc) i_liste 0 (*On additionne tout les elemnt de la liste*)
+  let liste_valeur = list_val_ligne  dim dim in
+  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
 ;;
       
 (*Q27*)
