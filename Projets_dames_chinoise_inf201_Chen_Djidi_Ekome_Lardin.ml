@@ -367,7 +367,9 @@ affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 (*3 Verifier une partie
 Q26*)
 
-let
+let score = fun(conf:configuration ->
+  List.fold_left (fun acc ((i,j,k),cou) -> if cou = (List.hd ljoueur) then acc + i else acc) 0 lcase
+;;
 
 
 
