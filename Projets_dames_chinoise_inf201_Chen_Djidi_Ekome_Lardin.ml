@@ -376,7 +376,7 @@ let score = fun (conf: configuration) ->
   List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
       else acc) 0 case_list ;; 
 
-let score_gagnant (dim : dimension) : int = 
+let score_gagnant= fun (dim : dimension) ->
   let rec i_list iter dim = 
     match iter with 
     |0 -> []
@@ -389,8 +389,13 @@ let score_gagnant (dim : dimension) : int =
 
 let gagne = fun(conf:configuration) ->
   let (case_list, coul_list, dim) = conf in 
-  score conf = score_gagnant dim
-;;
+  score conf = score_gagnant dim ;;
+(*Q28*)
+
+
+(*4 Calcul des coups et stratégie gloutonne 
+Q29*)
+
 
 
 
