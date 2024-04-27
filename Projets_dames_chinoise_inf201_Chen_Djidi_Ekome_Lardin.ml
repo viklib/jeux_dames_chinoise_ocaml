@@ -376,13 +376,17 @@ let score = fun (conf: configuration) ->
   List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
       else acc) 0 case_list ;; 
 
-let score_gagnant= fun (dim : dimension) ->
-  let rec i_list iter dim = 
-    match iter with 
+
+let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
+    match a with 
     |0 -> []
-    |x -> [(dim+1)*iter]@i_list (iter-1) (dim+1) 
-  in let i_liste = i_list dim dim in
-  List.fold_right (fun i acc -> i+acc) i_liste 0
+    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
+(*b nb d'element dans la list*)
+
+assert( nb_precedent
+let score_gagnant= fun (dim : dimension) ->
+  let cordonnne = list_val_ligne  dim dim in
+  List.fold_right (fun i acc -> i+acc) i_liste 0 (*On additionne tout les elemnt de la liste*)
 ;;
       
 (*Q27*)
