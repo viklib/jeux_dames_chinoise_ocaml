@@ -393,9 +393,9 @@ let gagne = fun(conf:configuration) ->
 (*4 Calcul des coups et stratégie gloutonne 
 Q29*)
 
-
-
-
+let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
+         let nb_joueur = List.length list_joueur in
+         
 
 
 
