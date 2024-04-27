@@ -275,15 +275,26 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 && est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux3 =false
 && est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
 
-(*Q25
+(*Q25*)
+let rec fin_list = fun(l: 'a list) ->
+         match list with
+         |[]->[]
+         |[x] ->x
+         |t::q -> fin_list q;;
 
 
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
  match k with 
  |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
-                      && sont_cases_voisines case_1 case_2 (*1er verif*) && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) && est_dans_losange case_2 dim :bool)
-[@@warning "-8"];;
+                      && sont_cases_voisines case_1 case_2 (*1er verif*)
+                      && (quelle_couleur case_1 (case_list,t::q,dim) = Libre ) 
+                      && est_dans_losange case_2 dim 
+|Sm(list) -> est_saut_multiple list conf 
+             && est_dans_losange (fin_list list) dim
+[@@warning "-8"]
+;;
+
 
 let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
   match k with 
