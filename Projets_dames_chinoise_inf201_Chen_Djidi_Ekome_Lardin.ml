@@ -48,6 +48,8 @@ and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2
 ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
 and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
 and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) ;;
+let partie_1 = ([Du((-4, 2, 2), (-3, 1, 2)); Du((-3, 1, 2), (-2, 0, 2)); Du((-2, 0, 2), (-1, -1, 2)); Du((-1, -1, 2), (0, -1, 1)); Du((0, -1, 1), (1, -1, 0)); Du((1, -1, 0), (2, -2, 0)); Du((2, -2, 0), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((4, -3, -1), (5, -3, -2)); Du((5, -3, -2), (6, -3, -3)); Du((-4, 3, 1), (-3, 2, 1)); Du((-3, 2, 1), (-2, 1, 1)); Sm([(-4, 1, 3); (0, 1, -1)]); Sm([(-2, 1, 1); (2, 1, -3)]); Du((0, 1, -1), (1, 0, -1)); Du((2, 1, -3), (3, 0, -3)); Du((3, 0, -3), (4, -1, -3)); Du((4, -1, -3), (5, -2, -3)); Du((1, 0, -1), (2, -1, -1)); Du((2, -1, -1), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((4, -3, -1), (5, -3, -2)); Du((-5, 2, 3), (-4, 2, 2)); Sm([(-5, 3, 2); (-3, 1, 2)]); Sm([(-4, 2, 2); (-2, 0, 2)]); Sm([(-3, 1, 2); (-1, -1, 2)]); Sm([(-2, 0, 2); (0, -2, 2)]); Du((-1, -1, 2), (0, -1, 1)); Du((0, -1, 1), (1, -1, 0)); Du((1, -1, 0), (2, -1, -1)); Du((2, -1, -1), (3, -2, -1)); Du((3, -2, -1), (4, -2, -2)); Du((0, -2, 2), (1, -2, 1)); Du((1, -2, 1), (2, -2, 0)); Du((2, -2, 0), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((-6, 3, 3), (-5, 3, 2)); Du((-5, 3, 2), (-4, 3, 1)); Du((-4, 3, 1), (-3, 3, 0)); Du((-3, 3, 0), (-2, 3, -1)); Du((-2, 3, -1), (-1, 3, -2)); Du((-1, 3, -2), (0, 3, -3)); Sm([(0, 3, -3); (2, 1, -3)]); Du((2, 1, -3), (3, 0, -3)); Du((3, 0, -3), (4, -1, -3))]
+: coup list);
 
 (*Question 2*)
 
@@ -292,9 +294,11 @@ let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
                       && est_dans_losange (der_list list) dim
          [@@warning "-8"];;
 let coup1 = Du((-4, 2, 2), (-3, 1, 2)) 
-and coup2 =0[§ Du((-4, 3, 1), (-3, 2, 1));
-Sm([(-4, 2, 2); (-2, 2, 0)]);;;
-assert(est_coup_valide jeux3 coup1 = true);;
+and coup2 = Sm([(-4, 2, 2); (-2, 2, 0)])
+and coup3 = Du((1, 0, -1),(1, -1, 0));;
+assert(est_coup_valide jeux3 coup1 = true
+&& est_coup_valide jeux4 coup2 = true 
+&& est_coup_valide jeux1 coup3 = false);;
 
 let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
   match k with 
@@ -312,6 +316,9 @@ let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
   |true -> (appliquer_le_coup conf k :configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
+
+let rec partie_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup;;
 (*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
