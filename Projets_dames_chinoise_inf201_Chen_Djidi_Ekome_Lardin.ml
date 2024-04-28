@@ -283,13 +283,13 @@ assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          let (case_list,t::q(*coul_list*),dim) = conf in
           match k with 
-          |Du(case_1,case_2)-> est_case case_1 && est_case case_2 (*Etre sure que les case sont valide*)
+          |Du(case_1,case_2)-> (est_case case_1 && est_case case_2) (*Etre sure que les case sont valide*)
                                && sont_cases_voisines case_1 case_2 (*1er verif*)
                                && quelle_couleur case_1 conf = t
                                && quelle_couleur case_2 conf = Libre 
-                           && est_dans_losange case_2 dim 
+                               && est_dans_losange case_2 dim 
          |Sm(list) -> est_saut_multiple list conf 
-                   && est_dans_losange (der_list list) dim
+                      && est_dans_losange (der_list list) dim
          [@@warning "-8"];;
 
 
@@ -388,8 +388,9 @@ let gagne = fun(conf:configuration) ->
   let (case_list, coul_list, dim) = conf in 
   score conf = score_gagnant dim ;;
 (*Q28*)
-
-
+(* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
+let rec partie_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup;;
 (*4 Calcul des coups et stratégie gloutonne 
 Q29*)
 
