@@ -38,7 +38,7 @@ let est_case ((i,j,k):case):bool=
  (i+j+k=0);;
 (*Variable pour test*)
 (*case*)
-let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
+let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0) and case_4 =  (-4,1,3) ;;
 (*case list*)
 let casel_1 =[((-4, 1, 3), Libre); ((-4, 2, 2), Libre); ((-4, 3, 1), Libre);((-5, 2, 3), Libre); ((-5, 3, 2), Libre); ((-6, 3, 3), Libre)]
 (*configuration*)
@@ -67,32 +67,24 @@ let est_dans_etoile = fun((i,j,k):case) -> fun(dim:dimension) ->
   (est_dans_losange (i,j,k) dim) || (est_dans_losange (k,i,j) dim) || (est_dans_losange (j,k,i) dim);;
 assert( est_dans_losange (0,0,0) 2  = true );;
 (*Q4*)
-let tourner_case  = fun(m:int) -> fun(c:case) ->
-	let i,j,k = c in
-		match m mod 6 with
-		|0 -> (i,j,k)
-		|1 | -5 -> (-k,-i,-j)
-		|2 | -4 -> (j,k,i)
-		|3 | -3 -> (-i,-j,-k)
-		|4 | -2 -> (k,i,j)
-		|5 | -1 -> (-j,-k,-i)
-[@@warning "-8"]  
-;;                  
+let rec tourner_case = fun m-> fun ((i,j,k):case) -> 
+  if m = 0 then ((i,j,k):case)
+  else tourner_case (m-1)((-k,-i,-j):case);;         
 
                   (*test*)
-assert ( tourner_case 1 (1,2,3) =(-3,-1,-2));;
-
+assert ( tourner_case 1 (-6, 3, 3)= (-3, 6, -3));;
 
 (*Q5*)
 let translate = fun (c:case)-> fun (v :vecteur) ->
  let (i,j,k) = c and (v1,v2,v3) = v in
  ((i+v1,j+v2,k+v3):case);;
+
 (*Q6*)
 let diff_case = fun (c:case) -> fun (k:case) ->
  let (c1,c2,c3) = c and (k1,k2,k3) = k in
  ((c1-k1,c2-k2,c3-k3):vecteur);;
-(*
-1.2 Préparation des coups simples : déplacements unitaires et sauts simples  
+
+(*1.2 Préparation des coups simples : déplacements unitaires et sauts simples  
 Q7*)
 let sont_cases_voisines= fun (c:case) -> fun (k:case) ->
  let (d1,d2,d3)= diff_case  k c in
@@ -129,8 +121,6 @@ let vec_et_dist = fun (c:case) -> fun(k:case) ->
  if d = 0 then ((0,0,0),0 : vecteur*int)
    else (((i/d,j/d,k/d),d): vecteur*int);;
 
-let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
-
                   (*test*)
 assert(vec_et_dist case_1 case_0 =((0,1,-1),2) 
 && vec_et_dist case_1 case_2 =((-1,1,-1),2) 
@@ -164,28 +154,27 @@ let rec remplir_segment = fun (n:int) -> fun (c: case) ->
 if n = 0 then ([]:case list) else  ((i,j,k)::(remplir_segment (n-1) (i,j+1,k-1)):case list);;
 
                   (*test*)
-assert(remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
-&& remplir_segment 1 (0,0,0)=[(0,0,0)]
-&& remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
+assert(remplir_segment 3 case_4 =[(-4,1,3);(-4,2,2);(-4,3,1)]
+&& remplir_segment 1 case_0 =[(0,0,0)]
+&& remplir_segment 3 case_4 =[(-4,1,3);(-4,2,2);(-4,3,1)]
 && remplir_segment 4 (-3,-3,6) = [(-3, -3, 6); (-3, -2, 5); (-3, -1, 4); (-3, 0, 3)]);;
 
 (*Q12*)
-let rec remplir_triangle_bas = fun(n:int) -> fun(c: case)->
- let (i,j,k) = c in
- match n with
- |0 -> ([]:case list)
- |1-> ([(i,j,k)]:case list)
- |n -> ((remplir_segment n (i,j,k))@(remplir_triangle_bas (n-1) (i-1,j+1,k)):case list);;
+let rec remplir_triangle_bas (m:int) (c:case) : case list =
+  let i,j,k = c in
+    match m with
+    |m when m<=0 -> []
+    |_ -> remplir_segment m c @ remplir_triangle_bas (m-1) (i-1,j+1,k);;
 
                   (*test*)
 assert(remplir_triangle_bas 3 (-4, 1, 3) = [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)]);;
 
 (*Q13*)
-let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) ->
-         let(i,j,k) = c in
-         match n with 
-         | n when n <= 0 -> ([]: case list) 
-         |_ ->(( remplir_segment n c @ remplir_triangle_haut (n-1) (i+1,j,k-1) ) :case list) ;;
+let rec remplir_triangle_haut (m:int) (c:case) : case list =
+  let i,j,k = c in
+  match m with
+  |m when m<=0 -> []
+  |_ -> remplir_segment m c @ remplir_triangle_haut (m-1) (i+1,j,k-1);;
 
 (*Q14*)
 let rec colorie = fun (coul : couleur) -> fun(l : case list) -> 
@@ -203,21 +192,16 @@ let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
   |[] -> []
   |(case,couleur)::q -> [(tourner_case m case,couleur)] @ tourner_liste_case m q;;
                   (*test*)
-assert (
+assert ( tourner_liste_case 2 casel_1 = [((1, 3, -4), Libre); ((2, 2, -4), Libre); ((3, 1, -4), Libre); ((2, 3, -5), Libre); ((3, 2, -5), Libre); ((3, 3, -6), Libre)] );;
 
 let tourner_config = fun(conf:configuration)  -> 
 let (list_case,list_couleur,dim) = conf in
-  let m = 6/(List.length list_couleur) in 
-    ((tourner_liste_case m list_case,tourner_liste list_couleur, dim ): configuration);;
+  let m = (List.length list_couleur) in 
+    ((tourner_liste_case m list_case,tourner_list list_couleur, dim ): configuration);;
+		
+  		(*test*)
+assert( tourner_config  jeux1 = ([((4, -1, -3), Rouge); ((4, -2, -2), Rouge); ((4, -3, -1), Rouge);((5, -2, -3), Rouge); ((5, -3, -2), Rouge); ((6, -3, -3), Rouge)],[Jaune; Rouge; Vert], 3));;
 
-let rec tourner_liste_case (m:int) (s:case_coloree list) : case_coloree list =
-  match s with
-  |[] -> []
-  |(case,col)::fin -> [(tourner_case m case,col)] @ tourner_liste_case m fin ;;
-
-let tourner_config (case_col,coul,dim:configuration) : configuration =
-  let m = 6/(len coul) in 
-    tourner_liste_case m case_col,tourner_liste coul,dim ;;
 (*Q16*)
 let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:dimension)-> 
   match list_joueurs(*couleur*) with
@@ -225,8 +209,8 @@ let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:di
   |t::q -> tourner_liste_case (-1*6/n) (colorie t ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n q dim);;
 
 let remplir_init = fun(list_joueurs:couleur list) ->  fun(dim:dimension) ->
-  (tourner_config (coord_case (Liqt.length list_joueurs)list_joueurs dim,tourner_liste(tourner_liste(list_joueurs)),dim) : configuration);;*)
- 
+  (tourner_config (coord_case (Liqt.length list_joueurs)list_joueurs dim,tourner_liste(tourner_liste(list_joueurs)),dim) : configuration);;
+ coord_case 2 [Vert;Jaune] 3;;
 (*
 2.2 Recherche et suppression de case dans une configuration
 Q17*)
@@ -250,7 +234,7 @@ let rec supprime_dans_config  (c:case) (conf:configuration) :configuration =
 
 
 (*jeux d'essais*)
-assert( supprime_dans_config (-4,1,3) jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3)
+assert( supprime_dans_config case_4  jeux1 = ([((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)], [Vert; Jaune; Rouge], 3)
 && supprime_dans_config (-5,2,3) jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3)
 && supprime_dans_config (3,2,1) jeux2 = jeux2);;
 (*
