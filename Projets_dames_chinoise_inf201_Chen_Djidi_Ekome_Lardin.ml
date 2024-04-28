@@ -285,13 +285,16 @@ let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
           match k with 
           |Du(case_1,case_2)-> (est_case case_1 && est_case case_2) (*Etre sure que les case sont valide*)
                                && sont_cases_voisines case_1 case_2 (*1er verif*)
-                               && quelle_couleur case_1 conf = t
+                               && quelle_couleur case_1 conf <> Libre
                                && quelle_couleur case_2 conf = Libre 
                                && est_dans_losange case_2 dim 
          |Sm(list) -> est_saut_multiple list conf 
                       && est_dans_losange (der_list list) dim
          [@@warning "-8"];;
-
+let coup1 = Du((-4, 2, 2), (-3, 1, 2)) 
+and coup2 =0[§ Du((-4, 3, 1), (-3, 2, 1));
+Sm([(-4, 2, 2); (-2, 2, 0)]);;;
+assert(est_coup_valide jeux3 coup1 = true);;
 
 let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
   match k with 
