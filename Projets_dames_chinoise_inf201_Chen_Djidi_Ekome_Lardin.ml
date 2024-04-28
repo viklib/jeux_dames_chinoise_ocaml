@@ -67,9 +67,17 @@ let est_dans_etoile = fun((i,j,k):case) -> fun(dim:dimension) ->
   (est_dans_losange (i,j,k) dim) || (est_dans_losange (k,i,j) dim) || (est_dans_losange (j,k,i) dim);;
 assert( est_dans_losange (0,0,0) 2  = true );;
 (*Q4*)
-let rec tourner_case = fun m-> fun ((i,j,k):case) -> 
-  if m = 0 then ((i,j,k):case)
-  else tourner_case (m-1)((-k,-i,-j):case);;         
+let tourner_case (m:int) (c:case) : case = 
+	let i,j,k = c in
+		match m mod 6 with
+		|0 -> (i,j,k)
+		|1 | -5 -> (-k,-i,-j)
+		|2 | -4 -> (j,k,i)
+		|3 | -3 -> (-i,-j,-k)
+		|4 | -2 -> (k,i,j)
+		|5 | -1 -> (-j,-k,-i)
+[@@warning "-8"]  
+;;      
 
                   (*test*)
 assert ( tourner_case 1 (-6, 3, 3)= (-3, 6, -3));;
@@ -204,10 +212,11 @@ let (list_case,list_couleur,dim) = conf in
 assert( tourner_config  jeux1 = ([((4, -1, -3), Rouge); ((4, -2, -2), Rouge); ((4, -3, -1), Rouge);((5, -2, -3), Rouge); ((5, -3, -2), Rouge); ((6, -3, -3), Rouge)],[Jaune; Rouge; Vert], 3));;
 
 (*Q16*)
-let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:dimension)-> 
-  match list_joueurs(*couleur*) with
+let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_coloree list =
+  match ljoueurs with
   |[] -> []
-  |t::q -> tourner_liste_case (-1*6/n) (colorie t ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n q dim);;
+  |pr::fin -> tourner_liste_case (-1*6/n) (colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim);;
+
 
 let remplir_init = fun(list_joueurs:couleur list) ->  fun(dim:dimension) ->
   (tourner_config (coord_case (List.length list_joueurs) list_joueurs dim, tourner_list (tourner_list(list_joueurs)), dim) : configuration);;
