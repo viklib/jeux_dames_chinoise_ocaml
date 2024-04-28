@@ -47,9 +47,13 @@ and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2
 ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
 ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
 and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
-and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) ;;
-let partie_1 = ([Du((-4, 2, 2), (-3, 1, 2)); Du((-3, 1, 2), (-2, 0, 2)); Du((-2, 0, 2), (-1, -1, 2)); Du((-1, -1, 2), (0, -1, 1)); Du((0, -1, 1), (1, -1, 0)); Du((1, -1, 0), (2, -2, 0)); Du((2, -2, 0), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((4, -3, -1), (5, -3, -2)); Du((5, -3, -2), (6, -3, -3)); Du((-4, 3, 1), (-3, 2, 1)); Du((-3, 2, 1), (-2, 1, 1)); Sm([(-4, 1, 3); (0, 1, -1)]); Sm([(-2, 1, 1); (2, 1, -3)]); Du((0, 1, -1), (1, 0, -1)); Du((2, 1, -3), (3, 0, -3)); Du((3, 0, -3), (4, -1, -3)); Du((4, -1, -3), (5, -2, -3)); Du((1, 0, -1), (2, -1, -1)); Du((2, -1, -1), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((4, -3, -1), (5, -3, -2)); Du((-5, 2, 3), (-4, 2, 2)); Sm([(-5, 3, 2); (-3, 1, 2)]); Sm([(-4, 2, 2); (-2, 0, 2)]); Sm([(-3, 1, 2); (-1, -1, 2)]); Sm([(-2, 0, 2); (0, -2, 2)]); Du((-1, -1, 2), (0, -1, 1)); Du((0, -1, 1), (1, -1, 0)); Du((1, -1, 0), (2, -1, -1)); Du((2, -1, -1), (3, -2, -1)); Du((3, -2, -1), (4, -2, -2)); Du((0, -2, 2), (1, -2, 1)); Du((1, -2, 1), (2, -2, 0)); Du((2, -2, 0), (3, -2, -1)); Du((3, -2, -1), (4, -3, -1)); Du((-6, 3, 3), (-5, 3, 2)); Du((-5, 3, 2), (-4, 3, 1)); Du((-4, 3, 1), (-3, 3, 0)); Du((-3, 3, 0), (-2, 3, -1)); Du((-2, 3, -1), (-1, 3, -2)); Du((-1, 3, -2), (0, 3, -3)); Sm([(0, 3, -3); (2, 1, -3)]); Du((2, 1, -3), (3, 0, -3)); Du((3, 0, -3), (4, -1, -3))]
-: coup list);
+and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
+and jeux7 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3):configuration) 
+and jeux9 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert); ((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)], [Vert], 3):configuration) ;;
+let partie1 = ([Du((-4, 3, 1), (-3, 2, 1));Sm([(-4, 2, 2); (-2, 2, 0)]);Sm([(-3, 2, 1); (-1, 2, -1)]);Sm([(-2, 2, 0); (0, 2, -2)]);Sm([(-1, 2, -1); (1, 2, -3)]);Du((1, 2, -3), (2, 1, -3));Du((0, 2, -2), (1, 1, -2));Du((1, 1, -2), (2, 0, -2));Sm([(2, 1, -3); (2, -1, -1)]);
+Du((2, 0, -2), (3, -1, -2));Sm([(2, -1, -1); (4, -1, -3)]);Du((3, -1, -2), (4, -2, -2));Du((4, -1, -3), (5, -2, -3));Du((4, -2, -2), (5, -3, -2));Du((5, -2, -3), (6, -3, -3));Sm([(-5, 2, 3); (-3, 0, 3)]);Du((-3, 0, 3), (-2, -1, 3));Du((-6, 3, 3), (-5, 2, 3));Sm([(-5, 2, 3); (-3, 0, 3); (-1, -2, 3)]);Du((-1, -2, 3), (0, -2, 2));Du((-5, 3, 2), (-4, 3, 1));Du((-4, 3, 1), (-4, 2, 2));Du((-4, 2, 2), (-5, 2, 3));Sm([(-5, 2, 3); (-3, 0, 3); (-1, -2, 3); (1, -2, 1)]);Du((1, -2, 1), (2, -2, 0));Du((-4, 1, 3), (-3, 0, 3));Sm([(-3, 0, 3); (-1, -2, 3); (1, -2, 1); (3, -2, -1)]);Du((3, -2, -1), (4, -2, -2));Du((-2, -1, 3), (-1, -2, 3));Sm([(-1, -2, 3); (1, -2, 1); (3, -2, -1); (5, -2, -3)]);Du((0, -2, 2), (1, -2, 1));Sm([(1, -2, 1); (3, -2, -1)]);Du((3, -2, -1), (4, -3, -1));Du((2, -2, 0), (3, -2, -1));Du((3, -2, -1), (3, -1, -2));Du((3, -1, -2), (4, -1, -3))]
+: coup list)
+and partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 
 (*Question 2*)
 
@@ -317,8 +321,68 @@ let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   |true -> (appliquer_le_coup conf k :configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
 
-let rec partie_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup;;
+
+
+
+(*3 Verifier une partie
+Q26*)
+let est_dans_Nord= fun (c : case) ->fun(dim : dimension) ->
+  let (i,j,k) = c in 
+  i>dim && est_dans_etoile c dim ;;
+
+let score = fun (conf: configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  let couleur_protagoniste = List.hd coul_list in
+  List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
+      else acc) 0 case_list ;; 
+
+
+let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
+    match a with 
+    |0 -> []
+    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
+(*b nb d'element dans la list*)
+let score_gagnant= fun (dim : dimension) ->
+  let liste_valeur = list_val_ligne  dim dim in
+  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
+;;
+      
+(*Q27*)
+
+let gagne = fun(conf:configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  score conf = score_gagnant dim ;;
+let jeux7 = ([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3) 
+assert( gagne jeux7 = true && gagne jeux3 = false);;
+(*Q28*)
+(* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
+let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+(List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup : configuration);;
+
+let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
+                  let (lcase,ljoueur,dim) = conf in
+                  let (partie : configuration) = conf_final conf lcoup in
+                   if gagne partie  then (List.hd ljoueur) else Libre ;;
+
+let 
+assert( est_partie jeux9 partie2 = Vert)
+(*4 Calcul des coups et stratégie gloutonne 
+Q29*)
+
+let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
+         let nb_joueur = List.length list_joueur in
+         
+
+
+
+
+
+
+
+
+
+
+
 (*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
@@ -368,57 +432,6 @@ affiche jeux6;;
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 *)
-
-(*3 Verifier une partie
-Q26*)
-let est_dans_Nord= fun (c : case) ->fun(dim : dimension) ->
-  let (i,j,k) = c in 
-  i>dim && est_dans_etoile c dim ;;
-
-let score = fun (conf: configuration) ->
-  let (case_list, coul_list, dim) = conf in 
-  let couleur_protagoniste = List.hd coul_list in
-  List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
-      else acc) 0 case_list ;; 
-
-
-let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
-    match a with 
-    |0 -> []
-    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
-(*b nb d'element dans la list*)
-let score_gagnant= fun (dim : dimension) ->
-  let liste_valeur = list_val_ligne  dim dim in
-  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
-;;
-      
-(*Q27*)
-
-let gagne = fun(conf:configuration) ->
-  let (case_list, coul_list, dim) = conf in 
-  score conf = score_gagnant dim ;;
-(*Q28*)
-(* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
-let rec partie_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup;;
-(*4 Calcul des coups et stratégie gloutonne 
-Q29*)
-
-let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
-         let nb_joueur = List.length list_joueur in
-         
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
