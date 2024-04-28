@@ -1,3 +1,4 @@
+
 (*   
          Projet Dames Chinoises - INF201
 
@@ -356,8 +357,15 @@ assert( gagne jeux7 = true && gagne jeux3 = false);;
 (*Q28*)
 (* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
 let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+let (lcase,ljoueur,dim) = conf  in
+let nb_joueur = List.length ljoueur in
+
 (List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup : configuration);;
 
+ tourner_config nb_joueur 
+let (lcase,ljoueur,dim) = conf in
+ let (case,couleur) = (List.hd lcase) in
+ if couleur >
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
