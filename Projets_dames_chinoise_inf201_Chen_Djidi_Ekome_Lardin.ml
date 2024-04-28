@@ -187,6 +187,7 @@ assert( colorie Rouge [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2
 
 
 (*Q15*)
+
 let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
   match l with
   |[] -> []
@@ -209,7 +210,7 @@ let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:di
   |t::q -> tourner_liste_case (-1*6/n) (colorie t ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n q dim);;
 
 let remplir_init = fun(list_joueurs:couleur list) ->  fun(dim:dimension) ->
-  (tourner_config (coord_case (Liqt.length list_joueurs)list_joueurs dim,tourner_liste(tourner_liste(list_joueurs)),dim) : configuration);;
+  (tourner_config (coord_case (List.length list_joueurs) list_joueurs dim, tourner_list (tourner_list(list_joueurs)), dim) : configuration);;
  coord_case 2 [Vert;Jaune] 3;;
 (*
 2.2 Recherche et suppression de case dans une configuration
