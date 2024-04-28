@@ -28,8 +28,7 @@ type configuration = case_coloree list * couleur list * dimension;; (*sans case 
         
 type coup = Du of case * case | Sm of case list;;
 
-type coup = Du of case * case | Sm of case list;;
-
+type case_option = None | Some of case;;
 
 let indice_valide (x:int) (dim:dimension) : bool =
  x >= -2*dim && x<= 2*dim;;
@@ -38,7 +37,11 @@ let indice_valide (x:int) (dim:dimension) : bool =
 let est_case ((i,j,k):case):bool=
  (i+j+k=0);;
 (*Variable pour test*)
-
+(*case*)
+let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
+(*case list*)
+let casel_1 =[((-4, 1, 3), Libre); ((-4, 2, 2), Libre); ((-4, 3, 1), Libre);((-5, 2, 3), Libre); ((-5, 3, 2), Libre); ((-6, 3, 3), Libre)]
+(*configuration*)
 let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
 and jeux2 = (([],[Vert;Rouge],2):configuration)
 and jeux3 =(([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
@@ -51,6 +54,7 @@ and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2,
 and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
 and jeux7 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3):configuration) 
 and jeux8 = (([((3, -2, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert);((5, -3, -2), Vert); ((5, -2, -3), Vert); ((6, -3, -3), Vert)],[Vert], 3):configuration) ;;
+(* list coup*)
 let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 
 (*Question 2*)
@@ -58,39 +62,44 @@ let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 let est_dans_losange ((i,j,k):case) (dim:dimension) : bool =
   -dim<=j && j<= dim && -dim <= k && k <= dim;;           
 
-
-(*A MODIFIER en Q3
-Choix de definir l'étoile par l'union de trois grand losange
-*)
-let est_dans_etoile ((i,j,k):case) (dim:dimension) : bool = 
+(* Q3*)
+let est_dans_etoile = fun((i,j,k):case) -> fun(dim:dimension) ->
   (est_dans_losange (i,j,k) dim) || (est_dans_losange (k,i,j) dim) || (est_dans_losange (j,k,i) dim);;
 assert( est_dans_losange (0,0,0) 2  = true );;
 (*Q4*)
-let rec tourner_case (m:int)  ((i,j,k):case) :case =
-   if m = 0 then (i,j,k)
-   else tourner_case (m-1)(-k,-i,-j);;                        
+let tourner_case  = fun(m:int) -> fun(c:case) ->
+	let i,j,k = c in
+		match m mod 6 with
+		|0 -> (i,j,k)
+		|1 | -5 -> (-k,-i,-j)
+		|2 | -4 -> (j,k,i)
+		|3 | -3 -> (-i,-j,-k)
+		|4 | -2 -> (k,i,j)
+		|5 | -1 -> (-j,-k,-i)
+[@@warning "-8"]  
+;;                  
 
-
+                  (*test*)
 assert ( tourner_case 1 (1,2,3) =(-3,-1,-2));;
 
 
 (*Q5*)
-let translate = fun (c:case)->fun (v :vecteur) ->
- let (i,j,k) = c in
- let (v1,v2,v3) = v in
+let translate = fun (c:case)-> fun (v :vecteur) ->
+ let (i,j,k) = c and (v1,v2,v3) = v in
  ((i+v1,j+v2,k+v3):case);;
 (*Q6*)
-let diff_case = fun (c:case) -> fun(k:case) ->
- let (c1,c2,c3) = c in
- let (k1,k2,k3) = k in
+let diff_case = fun (c:case) -> fun (k:case) ->
+ let (c1,c2,c3) = c and (k1,k2,k3) = k in
  ((c1-k1,c2-k2,c3-k3):vecteur);;
 (*
 1.2 Préparation des coups simples : déplacements unitaires et sauts simples  
 Q7*)
-let sont_cases_voisines= fun (c:case) -> fun(k:case) ->
+let sont_cases_voisines= fun (c:case) -> fun (k:case) ->
  let (d1,d2,d3)= diff_case  k c in
  let d = (abs d1, abs d2, abs d3) in
  d = (1, 1, 0) || d = (1, 0, 1) || d= (0, 1, 1);;
+ 
+                   (*test*)
  assert(sont_cases_voisines (3,1,-4)(3,2,-5)=true
  && sont_cases_voisines (4,1,-5)(1,2,-5)=false
  && sont_cases_voisines (1, 0,-1)(0,0,0)=true
@@ -99,17 +108,17 @@ let sont_cases_voisines= fun (c:case) -> fun(k:case) ->
  && sont_cases_voisines (1, 0, -1)(2,-1,-1)=true
  && sont_cases_voisines (1, 0,-1)(0,1,-1)=true);;
 (*Q8*)
-type case_option = None | Some of case;;
+
 let calcul_pivot = fun (c:case) -> fun(k:case) ->
- let (c1,c2,c3) = c in
- let (k1,k2,k3) = k in
+ let (c1,c2,c3) = c and (k1,k2,k3) = k in
  let d = diff_case c k in
  let (d1,d2,d3) = d in
  if d1 =0 && (d2+d3) mod 2 =0 then Some(c1,(c2+k2)/2,(c3+k3)/2) else
  if d2 = 0 && (d1+d3) mod 2 = 0 then Some((c1+k1)/2,c2,(c3+k3)/2) else
- if d3 = 0 && (d1+d2) mod 2 = 0 then Some((c1+k1)/2,(c2+k2)/2,c3) else None;;
+ if d3 = 0 && (d1+d2) mod 2 = 0 then Some((c1+k1)/2,(c2+k2)/2,c3) else
+ None;;
 
-
+                  (*test*)
 assert (calcul_pivot (0,-2,2) (0,2,-2)= Some (0,0,0));;
 (*Q9*)
 
@@ -122,6 +131,7 @@ let vec_et_dist = fun (c:case) -> fun(k:case) ->
 
 let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0);;
 
+                  (*test*)
 assert(vec_et_dist case_1 case_0 =((0,1,-1),2) 
 && vec_et_dist case_1 case_2 =((-1,1,-1),2) 
 && vec_et_dist case_2 case_0 =((1,0,0),2) 
@@ -152,11 +162,12 @@ Fonction pour remplir un segment *)
 let rec remplir_segment = fun (n:int) -> fun (c: case) ->
  let (i,j,k) = c in
 if n = 0 then ([]:case list) else  ((i,j,k)::(remplir_segment (n-1) (i,j+1,k-1)):case list);;
+
+                  (*test*)
 assert(remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
 && remplir_segment 1 (0,0,0)=[(0,0,0)]
 && remplir_segment 3 (-4,1,3)=[(-4,1,3);(-4,2,2);(-4,3,1)]
 && remplir_segment 4 (-3,-3,6) = [(-3, -3, 6); (-3, -2, 5); (-3, -1, 4); (-3, 0, 3)]);;
-
 
 (*Q12*)
 let rec remplir_triangle_bas = fun(n:int) -> fun(c: case)->
@@ -165,32 +176,48 @@ let rec remplir_triangle_bas = fun(n:int) -> fun(c: case)->
  |0 -> ([]:case list)
  |1-> ([(i,j,k)]:case list)
  |n -> ((remplir_segment n (i,j,k))@(remplir_triangle_bas (n-1) (i-1,j+1,k)):case list);;
+
+                  (*test*)
 assert(remplir_triangle_bas 3 (-4, 1, 3) = [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)]);;
+
 (*Q13*)
-let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) -> let(i,j,k) = c in
+let rec remplir_triangle_haut = fun(n:int) -> fun(c:case) ->
+         let(i,j,k) = c in
          match n with 
          | n when n <= 0 -> ([]: case list) 
-         |_ ->(( remplir_segment n (i,j,k) @ remplir_triangle_haut (n-1) (i+1,j,k-1) ) :case list) ;;
+         |_ ->(( remplir_segment n c @ remplir_triangle_haut (n-1) (i+1,j,k-1) ) :case list) ;;
 
 (*Q14*)
-
-let rec colorie = fun (coul : couleur) -> fun(l : case list) -> match l with 
+let rec colorie = fun (coul : couleur) -> fun(l : case list) -> 
+match l with 
 |[]->([]:case_coloree list) 
 |t::q -> ([t,coul]@(colorie coul q) : case_coloree list);;
-(*test*)
+
+                  (*test*)
 assert( colorie Rouge [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2); (-6, 3, 3)] =[((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge); ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)] );;
+
+
 (*Q15*)
 let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
   match l with
   |[] -> []
   |(case,couleur)::q -> [(tourner_case m case,couleur)] @ tourner_liste_case m q;;
+                  (*test*)
+assert (
 
 let tourner_config = fun(conf:configuration)  -> 
 let (list_case,list_couleur,dim) = conf in
   let m = 6/(List.length list_couleur) in 
     ((tourner_liste_case m list_case,tourner_liste list_couleur, dim ): configuration);;
 
+let rec tourner_liste_case (m:int) (s:case_coloree list) : case_coloree list =
+  match s with
+  |[] -> []
+  |(case,col)::fin -> [(tourner_case m case,col)] @ tourner_liste_case m fin ;;
 
+let tourner_config (case_col,coul,dim:configuration) : configuration =
+  let m = 6/(len coul) in 
+    tourner_liste_case m case_col,tourner_liste coul,dim ;;
 (*Q16*)
 let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:dimension)-> 
   match list_joueurs(*couleur*) with
