@@ -188,6 +188,44 @@ let tourner_config = fun ( conf : configuration) ->
  let (case_coul,coul,dim) = conf in 
  let long = List.length coul / 6 in (tourner_liste_case long case_coul,tourner_list coul, dim : configuration);;
 
+(*Q16
+let rec coord_case  = fun(n:int) ->fun(list_joueurs:couleur list) -> fun (dim:dimension)-> 
+  match list_joueurs with
+  |[] -> []
+  |t::q -> tourner_liste_case (-1*6/n) (colorie t ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n q dim);;
+
+let remplir_init = fun(list_joueurs:couleur list) ->  fun(dim:dimension) ->
+  (tourner_config (coord_case (len list_joueurs)list_joueurs dim,tourner_liste(tourner_liste(list_joueurs)),dim) : configuration);;*)
+  let remplir_init (l : liste_joueur) (d : dim) : configuration =
+  let c : case = (-d-1,1,d) in (* Ici on prend la case le + à gauche du triangle bas *)
+  let nb_joueur = List.length l in
+
+
+  let rec couleurs_liste l (nb) =
+    match nb,l with
+    |0,_ -> []
+    |_,[] -> []
+    |nb,pr::fin -> pr::couleurs_liste (tourner_liste l) (nb-1)
+  in
+
+
+  let couleur_joueur_liste = couleurs_liste coul_liste nb_joueur in
+
+
+  let rec init_plat (l : liste_joueur) (d : dim) (coul_liste : couleur_liste): case_couleur_liste =
+    let triangle = (remplir_triangle_bas d c) in
+    let couleur_liste_tourner = (tourner_liste coul_liste) in
+    let case_couleurs = colorier (List.hd couleur_liste_tourner) triangle in
+    match l with
+    |[] -> []
+    |pr::fin -> let premier = (tourner_config ((init_plat fin d couleur_liste_tourner), couleur_joueur_liste, d)) in
+    match premier with
+    |pr,_,_ -> pr@case_couleurs
+  in
+  (init_plat l d couleur_joueur_liste), couleur_joueur_liste, d
+;;
+
+
 
 (*
 2.2 Recherche et suppression de case dans une configuration
@@ -318,74 +356,6 @@ let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
   |true -> (appliquer_le_coup conf k :configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
-
-
-
-
-(*3 Verifier une partie
-Q26*)
-let est_dans_Nord= fun (c : case) ->fun(dim : dimension) ->
-  let (i,j,k) = c in 
-  i>dim && est_dans_etoile c dim ;;
-
-let score = fun (conf: configuration) ->
-  let (case_list, coul_list, dim) = conf in 
-  let couleur_protagoniste = List.hd coul_list in
-  List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
-      else acc) 0 case_list ;; 
-
-
-let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
-    match a with 
-    |0 -> []
-    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
-(*b nb d'element dans la list*)
-let score_gagnant= fun (dim : dimension) ->
-  let liste_valeur = list_val_ligne  dim dim in
-  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
-;;
-      
-(*Q27*)
-
-let gagne = fun(conf:configuration) ->
-  let (case_list, coul_list, dim) = conf in 
-  score conf = score_gagnant dim ;;
-assert( gagne jeux7 = true && gagne jeux3 = false);;
-(*Q28*)
-(* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
-let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-let (lcase,ljoueur,dim) = conf  in
-let nb_joueur = List.length ljoueur in
-
-(List.fold_left ( fun acc l -> mettre_a_jour_configuration acc l ) conf lcoup : configuration);;
-
- tourner_config nb_joueur 
-let (lcase,ljoueur,dim) = conf in
- let (case,couleur) = (List.hd lcase) in
- if couleur >
-let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
-                  let (lcase,ljoueur,dim) = conf in
-                  let (partie : configuration) = conf_final conf lcoup in
-                   if gagne partie  then let (case,couleur) = (List.hd lcase) in couleur else Libre ;;
-
-assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3, 2, 1))] = Libre);;
-(*4 Calcul des coups et stratégie gloutonne 
-Q29*)
-
-let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
-         let nb_joueur = List.length list_joueur in
-         
-
-
-
-
-
-
-
-
-
-
-
 (*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
 
@@ -424,17 +394,70 @@ let affiche (config:configuration):unit =
     in
     affiche_aux (2*dim+1);;
 
-affiche jeux1;;
-affiche jeux2;;
-affiche jeux3;;
-affiche jeux4;;
-affiche jeux5;;
-affiche jeux6;;
-
 
 (*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 *)
+
+
+
+(*3 Verifier une partie
+Q26*)
+let est_dans_Nord= fun (c : case) ->fun(dim : dimension) ->
+  let (i,j,k) = c in 
+  i>dim && est_dans_etoile c dim ;;
+
+let score = fun (conf: configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  let couleur_protagoniste = List.hd coul_list in
+  List.fold_left (fun acc ((i, k, j), couleur) (*case_couleur*)-> if couleur = couleur_protagoniste && est_dans_Nord (i, k, j) dim then acc + i 
+      else acc) 0 case_list ;; 
+
+
+let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
+    match a with 
+    |0 -> []
+    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
+(*b nb d'element dans la list*)
+let score_gagnant= fun (dim : dimension) ->
+  let liste_valeur = list_val_ligne  dim dim in
+  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
+;;
+      
+(*Q27*)
+
+let gagne = fun(conf:configuration) ->
+  let (case_list, coul_list, dim) = conf in 
+  score conf = score_gagnant dim ;;
+assert( gagne jeux7 = true && gagne jeux3 = false);;
+(*Q28*)
+let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration acc l) ) conf lcoup : configuration);;
+
+let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
+                  let (lcase,ljoueur,dim) = conf in
+                  let (partie : configuration) = conf_final conf lcoup in
+                   if gagne partie  then let (case,couleur) = (List.hd lcase) in couleur else Libre ;;
+
+assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3, 2, 1))] = Libre);;
+(*4 Calcul des coups et stratégie gloutonne 
+Q29*)
+
+let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
+         let nb_joueur = List.length list_joueur in
+         
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
