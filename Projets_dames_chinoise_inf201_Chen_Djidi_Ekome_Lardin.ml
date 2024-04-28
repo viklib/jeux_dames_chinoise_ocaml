@@ -49,7 +49,7 @@ and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2
 and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
 and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
 and jeux7 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3):configuration) 
-and jeux9 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert); ((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)], [Vert], 3):configuration) ;;
+and jeux8 = (([((3, -2, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert);((5, -3, -2), Vert); ((5, -2, -3), Vert); ((6, -3, -3), Vert)],[Vert], 3):configuration) ;;
 let partie1 = ([Du((-4, 3, 1), (-3, 2, 1));Sm([(-4, 2, 2); (-2, 2, 0)]);Sm([(-3, 2, 1); (-1, 2, -1)]);Sm([(-2, 2, 0); (0, 2, -2)]);Sm([(-1, 2, -1); (1, 2, -3)]);Du((1, 2, -3), (2, 1, -3));Du((0, 2, -2), (1, 1, -2));Du((1, 1, -2), (2, 0, -2));Sm([(2, 1, -3); (2, -1, -1)]);
 Du((2, 0, -2), (3, -1, -2));Sm([(2, -1, -1); (4, -1, -3)]);Du((3, -1, -2), (4, -2, -2));Du((4, -1, -3), (5, -2, -3));Du((4, -2, -2), (5, -3, -2));Du((5, -2, -3), (6, -3, -3));Sm([(-5, 2, 3); (-3, 0, 3)]);Du((-3, 0, 3), (-2, -1, 3));Du((-6, 3, 3), (-5, 2, 3));Sm([(-5, 2, 3); (-3, 0, 3); (-1, -2, 3)]);Du((-1, -2, 3), (0, -2, 2));Du((-5, 3, 2), (-4, 3, 1));Du((-4, 3, 1), (-4, 2, 2));Du((-4, 2, 2), (-5, 2, 3));Sm([(-5, 2, 3); (-3, 0, 3); (-1, -2, 3); (1, -2, 1)]);Du((1, -2, 1), (2, -2, 0));Du((-4, 1, 3), (-3, 0, 3));Sm([(-3, 0, 3); (-1, -2, 3); (1, -2, 1); (3, -2, -1)]);Du((3, -2, -1), (4, -2, -2));Du((-2, -1, 3), (-1, -2, 3));Sm([(-1, -2, 3); (1, -2, 1); (3, -2, -1); (5, -2, -3)]);Du((0, -2, 2), (1, -2, 1));Sm([(1, -2, 1); (3, -2, -1)]);Du((3, -2, -1), (4, -3, -1));Du((2, -2, 0), (3, -2, -1));Du((3, -2, -1), (3, -1, -2));Du((3, -1, -2), (4, -1, -3))]
 : coup list)
@@ -352,7 +352,6 @@ let score_gagnant= fun (dim : dimension) ->
 let gagne = fun(conf:configuration) ->
   let (case_list, coul_list, dim) = conf in 
   score conf = score_gagnant dim ;;
-let jeux7 = ([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3) 
 assert( gagne jeux7 = true && gagne jeux3 = false);;
 (*Q28*)
 (* Implémentation de est_partie qui prend une configuration initiale et une liste de coups *)
@@ -362,10 +361,9 @@ let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
-                   if gagne partie  then (List.hd ljoueur) else Libre ;;
+                   if gagne partie  then let (case,couleur) = (List.hd lcase) in couleur else Libre ;;
 
-let 
-assert( est_partie jeux9 partie2 = Vert)
+assert( est_partie jeux8 partie2 = Vert);;
 (*4 Calcul des coups et stratégie gloutonne 
 Q29*)
 
