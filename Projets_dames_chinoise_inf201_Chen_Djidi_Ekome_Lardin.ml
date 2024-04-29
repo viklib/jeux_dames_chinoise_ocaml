@@ -1,12 +1,11 @@
 
-(*   
-         Projet Dames Chinoises - INF201
+(*   Projet Dames Chinoises - INF201
 
 
 Lardin Viktor <viktor.lardin@univ-grenoble-alpes.fr>
 Chen Thierry <Thierry.chen@univ-grenoble-alpes.fr>
 Yanis Djidi <yanis.djidi@etu.univ-grenoble-alpes.fr>
-EKOME BIYOGO Michel-Arthur*)
+Eyad *)
 
 
 type dimension = int;; (*restreint aux entiers strictement positifs*)
@@ -457,75 +456,36 @@ let case_voisine = fun(c:case) ->
  	
  assert(case_voisine (0,0,0) = [(1, -1, 0); (0, -1, 1); (-1, 0, 1); (-1, 1, 0); (0, 1, -1); (1, 0, -1)]);;
 
- let rec renvoi_coup_simple = fun(conf : configuration)  -> fun(l : case list) -> fun(c : case) ->
+ let rec renvoi_coups_simples = fun(conf : configuration)  -> fun(c : case)  -> fun(l : case list) ->
   match l with 
-  |[] -> []
-  |pr::fin -> if est_coup_valide conf (Du(c,pr)) then ((Du(c,pr)),pr)::(renvoi_coup_simple conf fin c)
-  else renvoi_coup_simple conf fin c;;
-
-let saut_possible = fun(conf : configuration) -> fun (c:case) ->
-let(lcase,ljoueur,dim) = conf in
-match lcase with
-|t::q when est_saut c t
- 
-verif_cases_voisines (remplir_init [Vert] 3) (case_voisine (-4, 1, 3)) (-4, 1, 3)
-        
+  |pr::fin -> if est_coup_valide conf (Du(c,pr)) then ((Du(c,pr)),pr)::(renvoi_coups_simples (conf : configuration) c fin ) else renvoi_coups_simples (conf : configuration) c fin  
+  [@@warning "-8"];;
 
 
-
-
-
-
-
-
-let coups_possibles (config: configuration) (c: case): coup list =
-    let depl_unit_possibles (config: configuration) (c: case): coup list =
-        let cases_voisines =
-            List.init 6 (fun n -> translate c (tourner_case n (1, -1, 0)))
-        and coup_valide (c1: case) (c2: case): coup option = 
-            if est_coup_valide config (Du(c1, c2)) then
-                Some(Du(c1, c2))
-            else
-                None
-        in
-        List.filter_map (coup_valide c) cases_voisines
-
-    and sauts_mult_possibles (config: configuration) (c: case): coup list =
-        let saut_valides (config: configuration) (chemin: case list)
+let saut_valides (config: configuration) (chemin: case list)
                         (pivot: case): case list option =
-            let case_depart = der_liste chemin in
+            let case_depart = der_list chemin in
             let case_arrivee = translate pivot (diff_case case_depart pivot)
             in
-            if (est_saut config case_depart case_arrivee &&
+            if (est_saut  case_depart case_arrivee config  &&
                 not (List.mem case_arrivee chemin))
             then
                 Some(chemin @ [case_arrivee])
             else
-                None
-        in
-        let sauts_possibles (config: configuration)
-                            (chemin: case list): case list list =
-            let (cases_plateau, _) = List.split config.cases in
-            List.filter_map (saut_valides config chemin) cases_plateau
-        in
-        let rec loop (config: configuration) (chemins: case list list): case list list =
-            let nouveaux_sauts = List.concat (
-                List.rev_map (sauts_possibles config) chemins
-            ) in
-            match nouveaux_sauts with
-            | [] -> chemins
-            | _ -> chemins @ loop config nouveaux_sauts
-        in
-        let sauts = List.map (fun cp -> Sm(cp)) (loop config [[c]])
-        in
-        match sauts with
-        | []  -> failwith "gros prblème à `coups_possibles`"
-        | cp_absurde :: reste -> reste
-    in
-    depl_unit_possibles config c @
-    sauts_mult_possibles (supprime_dans_config config c) c
+                None ;;
+	
+(*
 
 
+let coups_possibles (config: configuration) (c: case): coup list =
+    (* Obtenir les coups simples (déplacements unitaires) *)
+    let coup_unitaires = renvoi_coups_simples conf  c (case_voisine c) in
+    (* Obtenir les sauts multiples possibles *)
+    let multiples = sauts_mult_possibles( supprime_dans_config(config, c), c) in
+    (* Retourner la liste des coups combinés *)
+    unitaires @ multiples;;
+
+*)
 
 
 
