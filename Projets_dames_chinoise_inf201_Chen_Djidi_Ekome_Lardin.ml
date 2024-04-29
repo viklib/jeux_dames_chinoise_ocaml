@@ -348,7 +348,7 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
 
 let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
-  |true -> (appliquer_le_coup conf k :configuration)
+  |true -> (tourner_config (appliquer_le_coup conf k ):configuration)
   |false -> failwith "Ce coup n'est pas valide, le joueur doir rejouer";;
 (*2.5*)
 let transfo x y = (y, (x-y)/2,(-x-y)/2);;
@@ -426,7 +426,7 @@ let gagne = fun(conf:configuration) ->
 assert( gagne jeux7 = true && gagne jeux3 = false);;
 (*Q28*)
 let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration acc l) ) conf lcoup : configuration);;
+(List.fold_left ( fun acc l -> mettre_a_jour_configuration  acc l ) conf lcoup : configuration);;
 
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
