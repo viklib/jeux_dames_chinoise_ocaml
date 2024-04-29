@@ -437,6 +437,13 @@ let  rec conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
 
 assert( conf_final (remplir_init [Vert;Jaune;Rouge] 3) [Du((-4, 2, 2), (-3, 1, 2));Du((-4, 2, 2), (-3, 1, 2))] = jeux10 );;
 
+affiche ( conf_final (remplir_init [Vert;Jaune;Rouge] 3) [Du((-4, 2, 2), (-3, 1, 2));
+Du((-4, 2, 2), (-3, 1, 2));
+Du((-4, 2, 2), (-3, 2, 1));
+Sm([(-4, 1, 3); (-2, 1, 1)]);
+Sm([(-4, 1, 3); (-2, 1, 1)]);
+Du((-4, 1, 3), (-3, 0, 3))]);;
+
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
