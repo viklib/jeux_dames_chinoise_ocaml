@@ -58,6 +58,9 @@ and jeux10 =(([((1, 2, -3), Jaune); ((2, -3, 1), Vert); ((3, -4, 1), Vert);((1, 
             [Rouge; Vert; Jaune], 3) : configuration);;
 (* list coup*)
 let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
+let coup1 = Du((-4, 2, 2), (-3, 1, 2)) 
+and coup2 = Sm([(-4, 2, 2); (-2, 2, 0)])
+and coup3 = Du((1, 0, -1),(1, -1, 0));;
 
 (*Q2*)
 let est_dans_losange = fun((i,j,k):case) -> fun(dim:dimension) ->
@@ -278,6 +281,10 @@ Q22*)
 let case_libre  = fun(c:case) -> fun(conf:configuration) ->
   (quelle_couleur c conf = Libre : bool);; (*dit si case a la couleur libre*)
 
+		(*test*)
+assert( case_libre case_0 jeux8 = true 
+	&&  case_libre case_4 jeux3 = false);;
+
 let rec est_libre_seg = fun (case1:case) -> fun(case2:case) -> fun(conf:configuration) ->
   let (x1,y1,z1) = case1 in
   let (x2,y2,z2) = case2 in
@@ -302,11 +309,10 @@ let est_saut = fun(case1:case)-> fun (case2:case) ->fun(conf:configuration) ->
 
 
 assert(est_saut (0, 0, 0) (0, 2, -2) ([((0, 0, 0), Jaune); ((0,1,-1), Rouge)], [Rouge; Jaune], 2) = true
-&& est_saut (-4, 3, 1) (-2, 1, 1) jeux3 = false 
-&& est_saut (-6, 3, 3) (-4, 1, 3) jeux3 = false
-&& est_saut (-2, 2, 0) (0, 0, 0) jeux3 = false
-&& est_saut(-4, 1, 3) (-4, 3, 1) jeux4 = true)
-;;
+	&& est_saut (-4, 3, 1) (-2, 1, 1) jeux3 = false 
+	&& est_saut (-6, 3, 3) (-4, 1, 3) jeux3 = false
+	&& est_saut (-2, 2, 0) (0, 0, 0) jeux3 = false
+	&& est_saut(-4, 1, 3) (-4, 3, 1) jeux4 = true);;
 (*Q24*)
 let rec est_saut_multiple = fun(l_c : case list)-> fun(conf:configuration) ->
          match l_c with
@@ -315,9 +321,9 @@ let rec est_saut_multiple = fun(l_c : case list)-> fun(conf:configuration) ->
          |c::k::q -> est_saut c k conf && est_saut_multiple q conf
          [@@warning "-8"];;
 assert( est_saut_multiple [(-4, 1, 3); (-4, 3, 1); (-2, 1, 1)] jeux4 = true 
-&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux5 = true 
-&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux3 =false
-&& est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
+	&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux5 = true 
+	&& est_saut_multiple [(-5, 2, 3); (-1, 2, -1); (1, 0, -1)] jeux3 =false
+	&& est_saut_multiple [(-5, 2, 3); (-3, 2, 1); (-1, 2, -1); (3, -2, -1)] jeux6 = true);; 
 
 (*Q25*)
 let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
@@ -331,9 +337,7 @@ let  est_coup_valide = fun(conf :configuration) -> fun(k:coup) ->
          |Sm(list) -> est_saut_multiple list conf 
                       && est_dans_losange (der_list list) dim
          [@@warning "-8"];;
-let coup1 = Du((-4, 2, 2), (-3, 1, 2)) 
-and coup2 = Sm([(-4, 2, 2); (-2, 2, 0)])
-and coup3 = Du((1, 0, -1),(1, -1, 0));;
+		(*test*)
 assert(est_coup_valide jeux3 coup1 = true
 && est_coup_valide jeux4 coup2 = true 
 && est_coup_valide jeux1 coup3 = false);;
@@ -347,8 +351,7 @@ let appliquer_le_coup = fun(conf :configuration) -> fun(k:coup) ->
              let couleur = quelle_couleur case1 conf in
              let (case_list, coul_list, dim) = supprime_dans_config case1 conf in
              let fin = der_list list in
-              ((fin, couleur)::case_list, coul_list, dim)
-;;
+              ((fin, couleur)::case_list, coul_list, dim);;
 
 let mettre_a_jour_configuration = fun(conf:configuration)-> fun (k:coup)->
   match (est_coup_valide conf k : bool) with
@@ -392,10 +395,9 @@ let affiche (config:configuration):unit =
     in
     affiche_aux (2*dim+1);;
 
-
-(*A essayer apres avoir fait remplir_init
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
-*)
+affiche (remplir_init [Vert;Jaune;Rouge] 3);;
+
 
 
 
