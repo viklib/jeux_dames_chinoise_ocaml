@@ -43,15 +43,18 @@ let casel_1 =[((-4, 1, 3), Libre); ((-4, 2, 2), Libre); ((-4, 3, 1), Libre);((-5
 let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
 and jeux2 = (([],[Vert;Rouge],2):configuration)
 and jeux3 =(([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
-((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+	   ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+	   ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
 and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
-((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+	    ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+              ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
 and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
 and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
 and jeux7 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3):configuration) 
-and jeux8 = (([((3, -2, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert);((5, -3, -2), Vert); ((5, -2, -3), Vert); ((6, -3, -3), Vert)],[Vert], 3):configuration) ;;
+and jeux8 = (([((3, -2, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert);((5, -3, -2), Vert); ((5, -2, -3), Vert); ((6, -3, -3), Vert)],[Vert], 3):configuration) 
+and jeux9 = (([((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert); ((-1, -3, 4), Jaune); ((-2, -2, 4), Jaune); ((-3, -1, 4), Jaune);((-2, -3, 5), Jaune); ((-3, -2, 5), Jaune); ((-3, -3, 6), Jaune); ((3, -4, 1), Rouge); ((2, -4, 2), Rouge); ((1, -4, 3), Rouge); ((3, -5, 2), Rouge); ((2, -5, 3), Rouge); ((3, -6, 3), Rouge);((4, -1, -3), Marron); ((4, -2, -2), Marron); ((4, -3, -1), Marron);
+	    ((5, -2, -3), Marron); ((5, -3, -2), Marron); ((6, -3, -3), Marron);((1, 3, -4), Noir); ((2, 2, -4), Noir); ((3, 1, -4), Noir);((2, 3, -5), Noir); ((3, 2, -5), Noir); ((3, 3, -6), Noir);((-3, 4, -1), Bleu); ((-2, 4, -2), Bleu); ((-1, 4, -3), Bleu);((-3, 5, -2), Bleu); ((-2, 5, -3), Bleu); ((-3, 6, -3), Bleu)],
+	    [Marron; Noir; Bleu; Vert; Jaune; Rouge], 3) : configuration);;
 (* list coup*)
 let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 
@@ -195,12 +198,6 @@ assert( colorie Rouge [(-4, 1, 3); (-4, 2, 2); (-4, 3, 1); (-5, 2, 3); (-5, 3, 2
 
 (*Q15*)
 
-let rec len (s:'a list) : int= 
-  match s with
-  |[] -> 0
-  |pr::fin -> 1 + len fin
-;;
-
 let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
   match l with
   |[] -> ([] : case_coloree list)
@@ -209,26 +206,23 @@ let rec tourner_liste_case = fun(m:int) -> fun(l:case_coloree list) ->
 assert ( tourner_liste_case 2 casel_1 = [((1, 3, -4), Libre); ((2, 2, -4), Libre); ((3, 1, -4), Libre); ((2, 3, -5), Libre); ((3, 2, -5), Libre); ((3, 3, -6), Libre)] );;
 
 
-let tourner_config (case_col,coul,dim:configuration) : configuration =
-  let m = 6/(len coul) in 
-    tourner_liste_case m case_col,tourner_list coul,dim
-;;
+let tourner_config = fun(conf :configuration)  ->
+  let case_l,coul,dim = conf in
+  let m = 6/(List.length coul) in 
+    (tourner_liste_case m case_l,tourner_list coul,dim : configuration );;
 		
   		(*test*)
-assert( tourner_config  jeux1 = ([((1, 3, -4), Rouge); ((2, 2, -4), Rouge); ((3, 1, -4), Rouge);
-  ((2, 3, -5), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge)],
- [Jaune; Rouge; Vert], 3));;
+
 
 (*Q16*)
-let rec coord_case (n:int) (ljoueurs:couleur list) (dim:dimension) : case_coloree list =
-  match ljoueurs with
-  |[] -> []
-  |pr::fin -> tourner_liste_case (-1*6/n) (colorie pr ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n fin dim);;
+let rec coord_case = fun (n:int) ->fun (list_joueurs:couleur list) -> fun (dim:dimension) ->
+  match list_joueurs with
+  |[] -> ([] : case_coloree list)
+  |t::q -> (tourner_liste_case (-1*6/n) (colorie t ( remplir_triangle_bas dim (-dim-1,1,dim))@coord_case n q dim) :  case_coloree list);;
 
 let remplir_init (ljoueurs:couleur list) (dim:dimension) : configuration =
-  tourner_config (coord_case (len ljoueurs) ljoueurs dim,tourner_list(tourner_list(ljoueurs)),dim);;
-
-remplir_init [Vert;Jaune] 3;;
+  tourner_config (coord_case (List.length ljoueurs) ljoueurs dim,tourner_list(tourner_list(ljoueurs)),dim);;
+ assert(remplir_init [Vert;Jaune;Rouge;Marron;Noir;Bleu] 3 = jeux9);;
 (*
 2.2 Recherche et suppression de case dans une configuration
 Q17*)
