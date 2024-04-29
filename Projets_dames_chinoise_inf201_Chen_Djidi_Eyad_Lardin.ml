@@ -1,11 +1,13 @@
 
 (*   Projet Dames Chinoises - INF201
-
+-------------------------------------------------------------------
 
 Lardin Viktor <viktor.lardin@univ-grenoble-alpes.fr>
 Chen Thierry <Thierry.chen@univ-grenoble-alpes.fr>
 Yanis Djidi <yanis.djidi@etu.univ-grenoble-alpes.fr>
-Eyad *)
+Eyad 
+-------------------------------------------------------------------
+*)
 
 
 type dimension = int;; (*restreint aux entiers strictement positifs*)
