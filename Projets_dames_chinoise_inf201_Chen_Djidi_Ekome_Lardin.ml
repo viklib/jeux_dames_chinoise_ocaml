@@ -40,21 +40,23 @@ let case_0 = (0,0,0) and case_1 = (0,2,-2) and case_2 = (2,0,0) and case_4 =  (-
 (*case list*)
 let casel_1 =[((-4, 1, 3), Libre); ((-4, 2, 2), Libre); ((-4, 3, 1), Libre);((-5, 2, 3), Libre); ((-5, 3, 2), Libre); ((-6, 3, 3), Libre)]
 (*configuration*)
-let jeux1 =([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
+let jeux1 = ([((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);  ((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],[Vert ;Jaune ;Rouge ], 3 :configuration )
 and jeux2 = (([],[Vert;Rouge],2):configuration)
-and jeux3 =(([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
-	   ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-	   ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+and jeux3 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
+	    ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
+	    ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
 and jeux4 = (([((3, -6, 3), Jaune); ((3, -5, 2), Jaune); ((3, -4, 1), Jaune);((2, -5, 3), Jaune); ((2, -4, 2), Jaune); ((1, -4, 3), Jaune);
 	    ((3, 1, -4), Rouge); ((3, 2, -5), Rouge); ((3, 3, -6), Rouge);((2, 2, -4), Rouge); ((2, 3, -5), Rouge); ((1, 3, -4), Rouge);
-              ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
-and jeux5=(([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
-and jeux6 =(([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
+            ((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-3, 2, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert)],[Jaune;Vert;Rouge],3):configuration)
+and jeux5=  (([((0, 1, -1), Vert); ((-3, 2, 1), Vert); ((-4, 1, 3), Vert);((-5, 2, 3), Vert); ((-6, 3, 3), Vert); ((-5, 3, 2), Vert)],[Vert],3):configuration)
+and jeux6 = (([((-6, 3, 3), Jaune); ((-5, 2, 3), Jaune); ((-4, 2, 2), Jaune);((-4, 3, 1), Jaune); ((-2, 2, 0), Jaune); ((1, 0, -1), Jaune)],[Jaune],3):configuration) 
 and jeux7 = (([((6, -3, -3), Vert); ((5, -3, -2), Vert); ((5, -2, -3), Vert);((4, -3, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert)],[Vert], 3):configuration) 
 and jeux8 = (([((3, -2, -1), Vert); ((4, -2, -2), Vert); ((4, -1, -3), Vert);((5, -3, -2), Vert); ((5, -2, -3), Vert); ((6, -3, -3), Vert)],[Vert], 3):configuration) 
 and jeux9 = (([((-4, 1, 3), Vert); ((-4, 2, 2), Vert); ((-4, 3, 1), Vert);((-5, 2, 3), Vert); ((-5, 3, 2), Vert); ((-6, 3, 3), Vert); ((-1, -3, 4), Jaune); ((-2, -2, 4), Jaune); ((-3, -1, 4), Jaune);((-2, -3, 5), Jaune); ((-3, -2, 5), Jaune); ((-3, -3, 6), Jaune); ((3, -4, 1), Rouge); ((2, -4, 2), Rouge); ((1, -4, 3), Rouge); ((3, -5, 2), Rouge); ((2, -5, 3), Rouge); ((3, -6, 3), Rouge);((4, -1, -3), Marron); ((4, -2, -2), Marron); ((4, -3, -1), Marron);
 	    ((5, -2, -3), Marron); ((5, -3, -2), Marron); ((6, -3, -3), Marron);((1, 3, -4), Noir); ((2, 2, -4), Noir); ((3, 1, -4), Noir);((2, 3, -5), Noir); ((3, 2, -5), Noir); ((3, 3, -6), Noir);((-3, 4, -1), Bleu); ((-2, 4, -2), Bleu); ((-1, 4, -3), Bleu);((-3, 5, -2), Bleu); ((-2, 5, -3), Bleu); ((-3, 6, -3), Bleu)],
-	    [Marron; Noir; Bleu; Vert; Jaune; Rouge], 3) : configuration);;
+	    [Marron; Noir; Bleu; Vert; Jaune; Rouge], 3) : configuration)
+and jeux10 =(([((1, 2, -3), Jaune); ((2, -3, 1), Vert); ((3, -4, 1), Vert);((1, -4, 3), Vert); ((3, -5, 2), Vert); ((2, -5, 3), Vert);((3, -6, 3), Vert); ((1, 3, -4), Jaune); ((3, 1, -4), Jaune);((2, 3, -5), Jaune); ((3, 2, -5), Jaune); ((3, 3, -6), Jaune);((-4, 1, 3), Rouge); ((-4, 2, 2), Rouge); ((-4, 3, 1), Rouge);((-5, 2, 3), Rouge); ((-5, 3, 2), Rouge); ((-6, 3, 3), Rouge)],
+            [Rouge; Vert; Jaune], 3) : configuration);;
 (* list coup*)
 let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 
@@ -428,14 +430,18 @@ assert( gagne jeux7 = true && gagne jeux3 = false);;
 
 (*Q28*)
 let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration  acc l) ) conf lcoup : configuration);;
+(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration  acc l) ) conf lcoup : configuration);
+
+assert( conf_final (remplir_init [Vert;Jaune;Rouge] 3) [Du((-4, 2, 2), (-3, 1, 2));Du((-4, 2, 2), (-3, 1, 2))] = jeux10 );;
 
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
                    if gagne partie  then let (case,couleur) = (List.hd lcase) in couleur else Libre ;;
 
-assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3, 2, 1))] = Libre);;
+assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3, 2, 1))] = Libre
+);;
+
 (*4 Calcul des coups et stratégie gloutonne 
 Q29*)
 
