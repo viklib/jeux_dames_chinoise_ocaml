@@ -63,12 +63,12 @@ let partie2 = ( [Du((3, -2, -1), (4, -3, -1))] : coup list);;
 (*Q2*)
 let est_dans_losange = fun((i,j,k):case) -> fun(dim:dimension) ->
   ((-dim<=j && j<= dim && -dim <= k && k <= dim ): bool );;    
-
+                  (*test*)
+assert( est_dans_losange (0,0,0) 2  = true );;
 (* Q3*)
 let est_dans_etoile = fun((i,j,k):case) -> fun(dim:dimension) ->
   (((est_dans_losange (i,j,k) dim) || (est_dans_losange (k,i,j) dim) || (est_dans_losange (j,k,i) dim)) : bool );;
-                  (*test*)
-assert( est_dans_losange (0,0,0) 2  = true );;
+
 (*Q4*)
 let tourner_case = fun(m:int) ->fun(c:case) ->
 	let i,j,k = c in
@@ -122,7 +122,7 @@ let calcul_pivot = fun (c:case) -> fun(k:case) ->
  None;;
 
                   (*test*)
-assert (calcul_pivot (0,-2,2) (0,2,-2)= Some (0,0,0));;
+assert (calcul_pivot (0,-2,2) (0,2,-2) = Some (0,0,0));;
 (*Q9*)
 
 let vec_et_dist = fun (c:case) -> fun(k:case) ->
@@ -234,7 +234,8 @@ let rec associe = fun(a:'a)-> fun(l:('a*'b) list) -> fun(defaut:'b) ->
     |(case,couleur)::fin -> if case = a then couleur 
                            else associe a fin defaut;;
 
-let quelle_couleur = fun (c:case)-> fun(conf:configuration) -> let (case_coul,coul,dim) =conf in
+let quelle_couleur = fun (c:case)-> fun(conf:configuration) ->
+let (case_coul,coul,dim) = conf in
   (associe c case_coul Libre : couleur );;
 
 (*Q18*)
@@ -415,8 +416,8 @@ let score = fun (conf: configuration) ->
 let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
     match a with 
     |0 -> []
-    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;
-(*b nb d'element dans la list*)
+    |x -> [(b+1)*a](*valeur 1er ligne*)@ list_val_ligne  (a-1) (b+1) ;;(*b nb d'element dans la list*)
+
 let score_gagnant= fun (dim : dimension) ->
   let liste_valeur = list_val_ligne  dim dim in
   List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*);;
@@ -429,8 +430,8 @@ let gagne = fun(conf:configuration) ->
 assert( gagne jeux7 = true && gagne jeux3 = false);;
 
 (*Q28*)
-let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration  acc l) ) conf lcoup : configuration);
+let  rec conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
+(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration  acc l) ) conf lcoup : configuration);;
 
 assert( conf_final (remplir_init [Vert;Jaune;Rouge] 3) [Du((-4, 2, 2), (-3, 1, 2));Du((-4, 2, 2), (-3, 1, 2))] = jeux10 );;
 
@@ -443,10 +444,32 @@ assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3,
 );;
 
 (*4 Calcul des coups et stratégie gloutonne 
-Q29*)
+Q29. Implémenter la fonction coup-possibles: configuration -> case ->
+(case*coup) list qui étant données une case 𝑐 et une configuration, retourne des
+couples (𝑐′, 𝑐𝑝) tels que 𝑐′ est accessible depuis 𝑐 en effectuant le coup 𝑐𝑝. Tous les coups
+ne seront pas listés (il peut y en avoir une infinité! pourquoi?), par contre il faut que
+toutes les cases 𝑐′ accessibles en un coup soient présentes exactement une fois dans la
+liste.*)
+let case_voisine = fun(c:case) ->
+	let i,j,k = c in
+ 	[(i+1,j-1,k);(i,j-1,k+1);(i-1,j,k+1);(i-1,j+1,k);(i,j+1,k-1);(i+1,j,k-1)];;
+  
+ 	
+ assert(case_voisine (0,0,0) = [(1, -1, 0); (0, -1, 1); (-1, 0, 1); (-1, 1, 0); (0, 1, -1); (1, 0, -1)]);;
 
-let remplir_inti = fun(list_joueur:couleur list) -> fun(dim: dimension) ->
-         let nb_joueur = List.length list_joueur in
+ 
+let rec renvoi_coup_simple = fun(conf : configuration)  -> fun(l : case list) -> fun(c : case) ->
+  match l with 
+  |[] -> []
+  |pr::fin -> if est_coup_valide conf (Du(c,pr)) then ((Du(c,pr)),pr)::(envoi_coup_simpleconf fin c)
+  else envoi_coup_simple conf fin c;;
+
+let saut_possible = fun(conf : configuration) -> fun (c:case) ->
+let(lcase,ljoueur,dim) = conf in
+match lcase with
+|t::q when quelles
+ 
+verif_cases_voisines (remplir_init [Vert] 3) (case_voisine (-4, 1, 3)) (-4, 1, 3)
          
 
 
