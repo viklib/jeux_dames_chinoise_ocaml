@@ -417,8 +417,7 @@ let rec list_val_ligne = fun(a:int) -> fun(b:int) ->
 (*b nb d'element dans la list*)
 let score_gagnant= fun (dim : dimension) ->
   let liste_valeur = list_val_ligne  dim dim in
-  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*)
-;;
+  List.fold_right (fun i acc -> i+acc) liste_valeur 0 (*On additionne tout les elemnt de la liste*);;
       
 (*Q27*)
 
@@ -426,10 +425,11 @@ let gagne = fun(conf:configuration) ->
   let (case_list, coul_list, dim) = conf in 
   score conf = score_gagnant dim ;;
 assert( gagne jeux7 = true && gagne jeux3 = false);;
+
 (*Q28*)
 let  conf_final = fun(conf:configuration) ->fun(lcoup: coup list) ->
-(List.fold_left ( fun acc l -> mettre_a_jour_configuration  acc l ) conf lcoup : configuration);;
-let j = remplir_init [Vert;Jaune;Rouge] 3 ;;
+(List.fold_left ( fun acc l -> tourner_config (mettre_a_jour_configuration  acc l) ) conf lcoup : configuration);;
+
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
                   let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
