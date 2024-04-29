@@ -397,9 +397,8 @@ let affiche (config:configuration):unit =
 
 affiche (remplir_init [Code "Ali";Code "Bob";Code "Jim"] 3);;
 affiche (remplir_init [Vert;Jaune;Rouge] 3);;
-
-
-
+affiche ((remplir_init [Vert;Jaune;Rouge;Noir;Bleu; Marron] 1));;
+affiche ((remplir_init [Vert;Jaune;Rouge;Noir;Bleu; Marron] 6));;
 
 (*3 Verifier une partie
 Q26*)
