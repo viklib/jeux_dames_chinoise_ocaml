@@ -445,8 +445,8 @@ Sm([(-4, 1, 3); (-2, 1, 1)]);
 Du((-4, 1, 3), (-3, 0, 3))]);;
 
 let est_partie = fun(conf:configuration) ->fun(lcoup: coup list) ->
-                  let (lcase,ljoueur,dim) = conf in
                   let (partie : configuration) = conf_final conf lcoup in
+		  let (lcase,ljoueur,dim) = partie in
                    if gagne partie  then let (case,couleur) = (List.hd lcase) in couleur else Libre ;;
 
 assert( est_partie jeux8 partie2 = Vert && est_partie jeux3 [Du((-4, 3, 1), (-3, 2, 1))] = Libre
